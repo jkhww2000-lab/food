@@ -1,23 +1,23 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>푸드트럭 맵</title>
   <style>
-    body { margin: 0; }
+    html, body { margin: 0; height: 100%; }
     #map { width: 100vw; height: 100vh; }
   </style>
 </head>
-
 <body>
   <div id="map"></div>
 
-  <!-- 카카오 지도 SDK -->
-  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=4488a3f93089cb6b9cda00e95e683574&libraries=services&autoload=true"></script>
+  <!-- 1) 카카오 지도 SDK (autoload=false로 로딩 제어 권장) -->
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=여기에_네_JS키&autoload=false"></script>
 
   <script>
-    // 카카오 지도 SDK가 로드된 이후의 코드
-    function initMap() {
+    // 2) SDK가 로드된 뒤 실행
+    kakao.maps.load(() => {
       const mapContainer = document.getElementById('map');
       const mapOption = {
         center: new kakao.maps.LatLng(37.5665, 126.9780),
@@ -25,39 +25,26 @@
       };
       const map = new kakao.maps.Map(mapContainer, mapOption);
 
-      // 푸드트럭 데이터 (임시)
       const foodTrucks = [
-        {
-          name: "김밥 트럭",
-          lat: 37.5675,
-          lng: 126.9784
-        },
-        {
-          name: "타코 트럭",
-          lat: 37.5651,
-          lng: 126.9768
-        }
+        { name: "김밥 트럭", lat: 37.5675, lng: 126.9784 },
+        { name: "타코 트럭", lat: 37.5651, lng: 126.9768 }
       ];
 
-      // 마커 표시
       foodTrucks.forEach(truck => {
         const marker = new kakao.maps.Marker({
-          map: map,
+          map,
           position: new kakao.maps.LatLng(truck.lat, truck.lng)
         });
 
         const info = new kakao.maps.InfoWindow({
-          content: `<div style="padding:5px;">${truck.name}</div>`
+          content: `<div style="padding:6px 8px;font-size:13px;">${truck.name}</div>`
         });
 
-        kakao.maps.event.addListener(marker, 'click', () => {
+        kakao.maps.event.addListener(marker, "click", () => {
           info.open(map, marker);
         });
       });
-    }
-
-    // window.onload 또는 initMap을 호출
-    window.onload = initMap;
+    });
   </script>
 </body>
 </html>
