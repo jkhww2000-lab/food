@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>푸드트럭 맵</title>
+  <style>
+    body { margin: 0; }
+    #map { width: 100vw; height: 100vh; }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+
+ <!-- 카카오 지도 SDK -->
+<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=4488a3f93089cb6b9cda00e95e683574"></script>
+
+<script>
+  console.log("kakao object:", window.kakao);
+</script>
+
+
+<script>
+  const mapContainer = document.getElementById('map');
+  const mapOption = {
+    center: new kakao.maps.LatLng(37.5665, 126.9780),
+    level: 5
+  };
+  const map = new kakao.maps.Map(mapContainer, mapOption);
+</script>
+
+
+    // 2. 푸드트럭 데이터 (임시)
+    const foodTrucks = [
+      {
+        name: "김밥 트럭",
+        lat: 37.5675,
+        lng: 126.9784
+      },
+      {
+        name: "타코 트럭",
+        lat: 37.5651,
+        lng: 126.9768
+      }
+    ];
+
+    // 3. 마커 표시
+    foodTrucks.forEach(truck => {
+      const marker = new kakao.maps.Marker({
+        map: map,
+        position: new kakao.maps.LatLng(truck.lat, truck.lng)
+      });
+
+      const info = new kakao.maps.InfoWindow({
+        content: `<div style="padding:5px;">${truck.name}</div>`
+      });
+
+      kakao.maps.event.addListener(marker, 'click', () => {
+        info.open(map, marker);
+      });
+    });
+  </script>
+</body>
+</html>
