@@ -12,12 +12,12 @@
 <body>
   <div id="map"></div>
 
-  <!-- 1) 카카오 지도 SDK (autoload=false로 로딩 제어 권장) -->
+  <!-- (1) 카카오 지도 파일을 먼저 불러온다 -->
   <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=4c9ca5866ae855098bcdec6a038c6934&autoload=false"></script>
 
+  <!-- (2) 불러오기 끝나면 그때 지도 만든다 -->
   <script>
-    // 2) SDK가 로드된 뒤 실행
-    kakao.maps.load(() => {
+    kakao.maps.load(function () {
       const mapContainer = document.getElementById('map');
       const mapOption = {
         center: new kakao.maps.LatLng(37.5665, 126.9780),
@@ -32,7 +32,7 @@
 
       foodTrucks.forEach(truck => {
         const marker = new kakao.maps.Marker({
-          map,
+          map: map,
           position: new kakao.maps.LatLng(truck.lat, truck.lng)
         });
 
@@ -40,7 +40,7 @@
           content: `<div style="padding:6px 8px;font-size:13px;">${truck.name}</div>`
         });
 
-        kakao.maps.event.addListener(marker, "click", () => {
+        kakao.maps.event.addListener(marker, 'click', function () {
           info.open(map, marker);
         });
       });
@@ -48,5 +48,3 @@
   </script>
 </body>
 </html>
-
-
